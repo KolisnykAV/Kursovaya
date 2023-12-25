@@ -87,6 +87,13 @@ class FileProcessorApp:
                      paragraph_format.line_spacing_rule = WD_LINE_SPACING.ONE_POINT_FIVE
                      paragraph_format.space_after = Pt(0.3)  # в итоге интервал 1,2
 
+         # добавить номер страницы
+         footer = doc.sections[0].footer
+         paragraph = footer.paragraphs[0]
+         paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+         paragraph.paragraph_format.left_indent = Pt(0)
+         paragraph.paragraph_format.right_indent = Pt(0)
+         self.add_page_number(paragraph.add_run())
 
          file_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word documents", "*.docx"), ("All files", "*.*")])
 
