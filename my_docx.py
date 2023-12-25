@@ -37,16 +37,55 @@ class FileProcessorApp:
          section.left_margin = Cm(2)
          section.right_margin = Cm(2)
          for paragraph in doc.paragraphs:
-            for run in paragraph.runs:
-                run.font.name = "Times New Roman"
-                run.font.size = Pt(14)
-                paragraph_format = paragraph.paragraph_format
-                paragraph_format.first_line_indent = Cm(1)  # абзацный отступ 10 мм
-                # paragraph_format.line_spacing = 1.5   второй вариант межстрочного интервала
-                paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
-                paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
-                paragraph_format.line_spacing_rule = WD_LINE_SPACING.ONE_POINT_FIVE
-                paragraph_format.space_after = Pt(0.3) #в итоге интервал 1,2
+             if paragraph.style.name.startswith('Heading'):
+                 heading_level = int(paragraph.style.name.split()[1])
+
+                 if heading_level == 1:
+                     paragraph_format = paragraph.paragraph_format
+                     paragraph_format.space_after = Pt(12)
+                     paragraph_format.space_before = Pt(12)
+                     paragraph_format.left_indent = Pt(36)
+                     paragraph_format.right_indent = Pt(36)
+                     paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                     for run in paragraph.runs:
+                         run.font.name = "Times New Roman"
+                         run.font.size = Pt(16)
+                         run.font.bold = True
+                         run.font.all_caps = True
+                 elif heading_level == 2:
+                     paragraph_format = paragraph.paragraph_format
+                     paragraph_format.space_after = Pt(12)
+                     paragraph_format.space_before = Pt(12)
+                     paragraph_format.left_indent = Pt(36)
+                     paragraph_format.right_indent = Pt(36)
+                     paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+                     for run in paragraph.runs:
+                         run.font.name = "Times New Roman"
+                         run.font.size = Pt(15)
+                         run.font.bold = True
+                 elif heading_level == 3:
+                     paragraph_format = paragraph.paragraph_format
+                     paragraph_format.space_after = Pt(12)
+                     paragraph_format.space_before = Pt(12)
+                     paragraph_format.left_indent = Pt(36)
+                     paragraph_format.right_indent = Pt(36)
+                     paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+                     for run in paragraph.runs:
+                         run.font.name = "Times New Roman"
+                         run.font.size = Pt(14)
+                         run.font.bold = True
+                         run.font.italic = True
+             else:
+                 for run in paragraph.runs:
+                     run.font.name = "Times New Roman"
+                     run.font.size = Pt(14)
+                     paragraph_format = paragraph.paragraph_format
+                     paragraph_format.first_line_indent = Cm(1)  # абзацный отступ 10 мм
+                     # paragraph_format.line_spacing = 1.5   второй вариант межстрочного интервала
+                     paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+                     paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
+                     paragraph_format.line_spacing_rule = WD_LINE_SPACING.ONE_POINT_FIVE
+                     paragraph_format.space_after = Pt(0.3)  # в итоге интервал 1,2
 
 
          file_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word documents", "*.docx"), ("All files", "*.*")])
