@@ -21,6 +21,26 @@ class FileProcessorApp:
      self.process_button = tk.Button(self.master, text="Обработать файл", font=self.button_style, command=self.process_file)
      self.process_button.pack(pady=10)
 
+ def create_element(self, name):
+     return OxmlElement(name)
+
+ def create_attribute(self, element, name, value):
+     element.set(ns.qn(name), value)
+
+ def add_page_number(self, run):
+     fldChar1 = self.create_element('w:fldChar')
+     self.create_attribute(fldChar1, 'w:fldCharType', 'begin')
+
+     instrText = self.create_element('w:instrText')
+     self.create_attribute(instrText, 'xml:space', 'preserve')
+     instrText.text = "PAGE"
+
+     fldChar2 = self.create_element('w:fldChar')
+     self.create_attribute(fldChar2, 'w:fldCharType', 'end')
+
+     run._r.append(fldChar1)
+     run._r.append(instrText)
+     run._r.append(fldChar2)
 
  def select_file(self):
      self.file_path = filedialog.askopenfilename(filetypes=[("Word documents", "*.docx"), ("All files", "*.*")])
